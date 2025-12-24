@@ -1,4 +1,10 @@
 from glob import glob
+from pathlib import Path
+
+# `cwd`: current directory is straightforward
+script = Path(__file__).parent.resolve()
+base_folder = str(script).rsplit('/', 1)[0]+"/"
+content_folder = base_folder+"base_content/"
 
 def fill_template(template_text, title, current, contents_text):
     header,footer = template_text.split('!!main!!')
@@ -7,8 +13,8 @@ def fill_template(template_text, title, current, contents_text):
         ).replace('!!main!!', contents_text)
     
     ## REPLACE FILENAMES
-    bulletin_fname = glob("../content/bulletin/*")[0].split("..")[1][1:]
-    theme_fname = glob("../content/theme/*")[0].split("..")[1][1:]
+    bulletin_fname = glob(base_folder+"content/bulletin/*")[0]
+    theme_fname = glob(base_folder+"content/theme/*")[0]
     new_text = new_text.replace('!!THEME!!',theme_fname).replace('!!BULLETIN!!',bulletin_fname)
 
     for tab in ["!!current_home!!","!!current_cong!!","!!current_worship!!","!!current_ministry!!","!!current_events!!","!!current_contact!!"]:
@@ -18,19 +24,19 @@ def fill_template(template_text, title, current, contents_text):
             new_text = new_text.replace(tab,"")
 
     if title == 'Weddings':
-        slideshow_text = slideshow_filler("../content/wedding_slideshow")
+        slideshow_text = slideshow_filler(base_folder+"content/wedding_slideshow")
         new_text = new_text.replace("!!SLIDESHOW!!",slideshow_text)
     if title == 'Our Congregation':
-        slideshow_text = slideshow_filler("../content/congregation_slideshow")
+        slideshow_text = slideshow_filler(base_folder+"content/congregation_slideshow")
         new_text = new_text.replace("!!SLIDESHOW!!",slideshow_text)
 
     return new_text
 
 def make_template(name: str, current: str, title: str):
-    with open('_template.html') as f_template:
+    with open(content_folder+'_template.html') as f_template:
         template_text = f_template.read()
-        with open(f'_{name}', encoding="utf8") as f_contents:
-            with open(f'../{name}', 'w', encoding="utf8") as f_to:
+        with open(content_folder+f'_{name}', encoding="utf8") as f_contents:
+            with open(base_folder+f'../{name}', 'w', encoding="utf8") as f_to:
                 print(f"compiling {title}")
                 f_to.write(fill_template(
                     template_text,
@@ -47,11 +53,10 @@ def slideshow_filler(folder):
     files = glob(folder+"/*")
     total = len(files)
     for i,f in enumerate(files):
-        f_name = f.split("..")[1][1:]
         elem = f"""<div class='mySlides fade'>
                <div class='numbertext'>{i+1} / {total}</div>
                <h2 class='imgholder', style='height:30vw'>
-               <img src={f_name} style='max-height:100%'></h2>
+               <img src={f} style='max-height:100%'></h2>
                </div>"""
         txt+=elem
 
