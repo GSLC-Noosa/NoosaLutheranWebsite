@@ -3,8 +3,9 @@ from pathlib import Path
 
 # `cwd`: current directory is straightforward
 script = Path(__file__).parent.resolve()
+print(script)
 base_folder = str(script).rsplit('/', 1)[0]+"/"
-content_folder = base_folder+"base_content/"
+content_folder = base_folder+"content/base_content/"
 
 def fill_template(template_text, title, current, contents_text):
     header,footer = template_text.split('!!main!!')

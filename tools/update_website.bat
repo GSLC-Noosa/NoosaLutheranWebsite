@@ -6,8 +6,10 @@ set "HH=%dt:~8,2%" & set "Min=%dt:~10,2%" & set "Sec=%dt:~12,2%"
 set "datestamp=%YYYY%%MM%%DD%" & set "timestamp=%HH%%Min%%Sec%"
 set "fullstamp=%YYYY%-%MM%-%DD%_%HH%-%Min%-%Sec%"
 
-python PATH_TO_COMPILE
+set "directory=%~dp0%"
 
-call git commit -am "website update %datestamp%"
-call git push
+python "%directory%compile.py"
+
+call git -C "%directory%" commit -am "website update %datestamp%"
+call git -C "%directory%" push
 pause
