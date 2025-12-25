@@ -3,8 +3,8 @@ from pathlib import Path
 
 # `cwd`: current directory is straightforward
 script = Path(__file__).parent.resolve()
-print(script)
 base_folder = str(script).rsplit('/', 1)[0]+"/"
+print(base_folder)
 content_folder = base_folder+"content/base_content/"
 
 def fill_template(template_text, title, current, contents_text):
@@ -14,8 +14,9 @@ def fill_template(template_text, title, current, contents_text):
         ).replace('!!main!!', contents_text)
     
     ## REPLACE FILENAMES
-    bulletin_fname = glob(base_folder+"content/bulletin/*")[0]
-    theme_fname = glob(base_folder+"content/theme/*")[0]
+    bulletin_fname = glob(base_folder+"content/bulletin/*")[0].replace(base_folder,"")
+    theme_fname = glob(base_folder+"content/theme/*")[0].replace(base_folder,"")
+
     new_text = new_text.replace('!!THEME!!',theme_fname).replace('!!BULLETIN!!',bulletin_fname)
 
     for tab in ["!!current_home!!","!!current_cong!!","!!current_worship!!","!!current_ministry!!","!!current_events!!","!!current_contact!!"]:
@@ -37,7 +38,7 @@ def make_template(name: str, current: str, title: str):
     with open(content_folder+'_template.html') as f_template:
         template_text = f_template.read()
         with open(content_folder+f'_{name}', encoding="utf8") as f_contents:
-            with open(base_folder+f'../{name}', 'w', encoding="utf8") as f_to:
+            with open(base_folder+f'{name}', 'w', encoding="utf8") as f_to:
                 print(f"compiling {title}")
                 f_to.write(fill_template(
                     template_text,
@@ -54,6 +55,9 @@ def slideshow_filler(folder):
     files = glob(folder+"/*")
     total = len(files)
     for i,f in enumerate(files):
+
+        f = f.replace(base_folder,"")
+
         elem = f"""<div class='mySlides fade'>
                <div class='numbertext'>{i+1} / {total}</div>
                <h2 class='imgholder', style='height:30vw'>
