@@ -10,6 +10,8 @@ set "directory=%~dp0%"
 
 python "%directory%compile.py"
 
-call git -C "%directory%" commit -am "website update %datestamp%"
-call git -C "%directory%" push
+cd %directory%
+
+call git commit -am "website update %datestamp%"
+call git push
 pause
