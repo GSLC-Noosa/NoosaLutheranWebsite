@@ -12,6 +12,6 @@ python "%directory%compile.py"
 
 cd %directory%
 
-call git commit -am "website update %datestamp%"
+call git commit -am "website update %fullstamp%"
 call git push
 pause
