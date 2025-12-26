@@ -57,7 +57,7 @@ def slideshow_filler(folder):
               <h2 class="imgholder"><div class="slideshow-container">
           """
 
-    files = glob(folder+"/*")
+    files = sorted(glob(folder+"/*"))
     total = len(files)
     for i,f in enumerate(files):
 
