@@ -1,5 +1,6 @@
 from glob import glob
 from pathlib import Path
+import os
 
 # `cwd`: current directory is straightforward
 script = Path(__file__).parent.resolve()
