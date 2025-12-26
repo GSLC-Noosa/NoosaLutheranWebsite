@@ -8,11 +8,15 @@ set "fullstamp=%YYYY%-%MM%-%DD%_%HH%-%Min%-%Sec%"
 
 set "directory=%~dp0%"
 
+call git fetch origin
+
 python "%directory%compile.py"
 
 cd %directory%
 
 call git add ../*
 call git commit -am "website update %fullstamp%"
+call git pull --rebase
+
 call git push
 pause
