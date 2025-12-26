@@ -15,10 +15,13 @@ def fill_template(template_text, title, current, contents_text):
         ).replace('!!main!!', contents_text)
     
     ## REPLACE FILENAMES
-    bulletin_fname = glob(base_folder+"content/bulletin/*")[0].replace(base_folder,"")
-    theme_fname = glob(base_folder+"content/theme/*")[0].replace(base_folder,"")
+    bulletin_fnames = glob(base_folder+"content/bulletin/*")
+    latest_bulletin_file = max(bulletin_fnames, key=os.path.getctime).replace(base_folder,"")
 
-    new_text = new_text.replace('!!THEME!!',theme_fname).replace('!!BULLETIN!!',bulletin_fname)
+    theme_fnames = glob(base_folder+"content/theme/*")
+    latest_theme_file = max(theme_fnames, key=os.path.getctime).replace(base_folder,"")
+
+    new_text = new_text.replace('!!THEME!!',latest_theme_file).replace('!!BULLETIN!!',latest_bulletin_file)
 
     for tab in ["!!current_home!!","!!current_cong!!","!!current_worship!!","!!current_ministry!!","!!current_events!!","!!current_contact!!"]:
         if tab == current:
